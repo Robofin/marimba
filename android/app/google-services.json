@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "799509487250",
+    "project_id": "marimba-app",
+    "storage_bucket": "marimba-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799509487250:android:fe3c49955c9c4b547b504b",
+        "android_client_info": {
+          "package_name": "com.example.marimba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799509487250-o3368nra4g2m0fc82jlhpn9uveehak1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn2QZ6lT78Nsd8rwp9Nhgg4I7aakKwQAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799509487250-o3368nra4g2m0fc82jlhpn9uveehak1o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "799509487250-tfalk7f7mq6tldnpjkdtc34967okrfd2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.marimba"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
