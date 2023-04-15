@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,46 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _ageController = TextEditingController();
 
   Future signUp() async {
-    if (passwordConfirmed()) {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+    try {
+      if (passwordConfirmed()) {
+        // Create User
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
+
+        // Add User Details
+        addUserDetails(
+            _firstNameController.text.trim(),
+            _lastNameController.text.trim(),
+            _emailController.text.trim(),
+            int.parse(_ageController.text.trim()));
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(e.message.toString()),
+          );
+        },
+      );
     }
+  }
+
+  Future addUserDetails(
+      String firstName, String lastName, String email, int age) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'First Name': firstName,
+      'Last Name': lastName,
+      'Email': email,
+      'Age': age,
+    });
   }
 
   bool passwordConfirmed() {
@@ -38,6 +72,9 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _ageController.dispose();
     super.dispose();
   }
 
@@ -70,6 +107,81 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 20.0,
               ),
 
+              //First Name Text Field
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: TextField(
+                      controller: _firstNameController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'First Name',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: 10.0,
+              ),
+
+              //Last Name Text Field
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: TextField(
+                      controller: _lastNameController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Last Name',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: 10.0,
+              ),
+
+              //Age Text Field
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: TextField(
+                      controller: _ageController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Age',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: 10.0,
+              ),
+
               //Email Text Field
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -85,32 +197,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              SizedBox(
-                height: 10.0,
-              ),
-
-              //Password Text Field
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12.0)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Password',
                       ),
                     ),
                   ),
